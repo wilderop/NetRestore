@@ -1,0 +1,95 @@
+# NetRestore - server-wide network lag death restore
+# An incident requires TWO independent signals. Probe-only never grants restores.
+
+probe:
+  enabled: true
+  interval-seconds: 3
+  timeout-ms: 1000
+  # TCP connect targets. Do not use localhost.
+  targets:
+    - "1.1.1.1:443"
+    - "8.8.8.8:443"
+  # Flag probe if RTT >= max(absolute-ms, baseline * multiplier)
+  spike-multiplier: 3.0
+  absolute-ms: 250
+  fail-streak: 2
+  baseline-samples: 40
+
+crowd-ping:
+  enabled: true
+  interval-seconds: 1
+  spike-delta-ms: 180
+  min-spiked-players: 3
+  min-spiked-percent: 35
+  # Ignore a player who was already high-ping while others were fine
+  solo-high-ms: 250
+
+disconnects:
+  enabled: true
+  window-seconds: 8
+  min-quits: 3
+
+mspt:
+  # Optional extra signal (server freeze). Not required for network incidents.
+  enabled: true
+  spike-ms: 150
+  average-ms: 70
+  window-ticks: 40
+
+incident:
+  # Stay hot after recovery so post-freeze lava/mob deaths still qualify
+  grace-seconds: 12
+  min-online-for-crowd: 3
+
+offers:
+  expire-seconds: 300
+  require-confirm: true
+  cooldown-seconds: 21600
+  min-session-seconds: 45
+  contested-radius: 8.0
+  # Deny if another player is that close at death (possible PvP / loot)
+  deny-if-contested: true
+  deny-pvp: true
+  combat-tag-seconds: 20
+  restore-xp: true
+  restore-ender-chest: false
+  # If current inv already looks like the snapshot, refuse (anti-dupe)
+  deny-if-overlap-percent: 70
+
+# Environmental / world deaths only. PvP is blocked separately.
+allowed-causes:
+  - LAVA
+  - FIRE
+  - FIRE_TICK
+  - HOT_FLOOR
+  - DROWNING
+  - SUFFOCATION
+  - FALL
+  - VOID
+  - CONTACT
+  - CRAMMING
+  - DRYOUT
+  - FREEZE
+  - LIGHTNING
+  - MAGIC
+  - POISON
+  - WITHER
+  - STARVATION
+  - MELTING
+  - FLY_INTO_WALL
+  - FALLING_BLOCK
+  - BLOCK_EXPLOSION
+  - ENTITY_EXPLOSION
+  - ENTITY_ATTACK
+  - ENTITY_SWEEP_ATTACK
+  - PROJECTILE
+  - THORNS
+  - CAMPFIRE
+  - WORLD_BORDER
+
+denied-causes:
+  - SUICIDE
+  - KILL
+  - CUSTOM
+
+staff-alerts: true

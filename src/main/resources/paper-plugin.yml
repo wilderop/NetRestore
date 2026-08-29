@@ -1,0 +1,30 @@
+name: NetRestore
+version: '${project.version}'
+main: com.wilder0p.netrestore.NetRestore
+api-version: '26.1'
+authors:
+  - wilder0p
+description: Timed inventory restore for deaths during detected server-wide network lag.
+website: https://github.com/wilderop/NetRestore
+
+commands:
+  restore:
+    description: Restore inventory after a lag-incident death
+    usage: /restore [confirm]
+    permission: netrestore.use
+  netrestore:
+    description: Admin controls for NetRestore
+    usage: /netrestore <status|reload|preview|deny|force>
+    permission: netrestore.admin
+    aliases: [nr]
+
+permissions:
+  netrestore.use:
+    description: Use /restore after an eligible lag death
+    default: true
+  netrestore.admin:
+    description: Admin commands and staff alerts
+    default: op
+  netrestore.bypass-cooldown:
+    description: Bypass the per-player restore cooldown
+    default: false
