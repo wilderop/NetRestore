@@ -1,3 +1,6 @@
+<!-- azpbmd-live -->
+**Live:** survival
+<!-- /azpbmd-live -->
 # NetRestore
 
 Paper plugin that detects **server-wide network lag** and offers a 5-minute `/restore` after eligible deaths.
